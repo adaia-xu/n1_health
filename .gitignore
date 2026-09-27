@@ -1,0 +1,6 @@
+venv/
+data/raw/
+data/processed/
+*.xml
+__pycache__/
+*.pyc
