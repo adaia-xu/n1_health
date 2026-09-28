@@ -48,3 +48,25 @@ def daily_totals(steps):
     dailysteps = steps.groupby("day")["value"].sum().reset_index()
     dailysteps.columns=["day","total_steps"] #renaming columnns to be more clear
     return dailysteps
+
+#checking for how complete the calendar is
+def completeness_report(daily):
+    #convering day column in the og data into standardized datetime objects
+    daysHealth = pd.to_datetime(daily["day"])
+
+    #finding earliest and latest dates in data
+    full_range = pd.date_range(daysHealth.min(), daysHealth.max(), freq = "D")
+
+    #building a baseline timeline with no gaps in the calendar
+    stepsReport = pd.DataFrame({"day":full_range})
+
+    #merging the blank calendar with original daily data
+    #when we use how = 'left', every single day is kept from complete calendar
+    reportHealth = stepsReport.merge(
+        daily.assign(day=daysHealth), on="day", how="left"  
+    )
+
+    #creating a true/false column
+    #flags days with values as true
+    reportHealth["has_data"] = reportHealth["total_steps"].notna()
+    return reportHealth
