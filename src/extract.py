@@ -22,7 +22,7 @@ if __name__== "__main__":
     print(f"Total records found: {len(healthrecords)}")
 
     #importing two functions from transform.py
-    from transform import records_to_dataframe, sorting_step_counts, add_day_for_column
+    from transform import records_to_dataframe, sorting_step_counts, add_day_for_column, daily_totals
 
     #converts list into of health records into pandas dataframe
     df = records_to_dataframe(healthrecords)
@@ -34,3 +34,10 @@ if __name__== "__main__":
     
     steps = add_day_for_column(steps)
     print(steps.head())
+    
+    dailysteps = daily_totals(steps)
+    print(dailysteps.head())
+
+    print(f"\nTotal days with data: {len(dailysteps)}")
+   
+

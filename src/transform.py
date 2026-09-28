@@ -41,3 +41,10 @@ def add_day_for_column(steps):
     #extracts y-m-d and stores into column day
     steps["day"]=steps["startDate"].dt.date
     return steps
+
+def daily_totals(steps):
+
+    #steps.groupby groups all rows with same day value
+    dailysteps = steps.groupby("day")["value"].sum().reset_index()
+    dailysteps.columns=["day","total_steps"] #renaming columnns to be more clear
+    return dailysteps

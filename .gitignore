@@ -1,6 +1,14 @@
+
+#ignores python virtual environnment, raw and processed data, xml files, and python cache files
 venv/
+
+#ignores actual data files
 data/raw/
 data/processed/
+
+#ignores xml files and python cache files
 *.xml
+
+#ignores python bytecode cache
 __pycache__/
 *.pyc
