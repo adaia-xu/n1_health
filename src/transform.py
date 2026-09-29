@@ -70,3 +70,13 @@ def completeness_report(daily):
     #flags days with values as true
     reportHealth["has_data"] = reportHealth["total_steps"].notna()
     return reportHealth
+
+def confidence_growth(daily):
+    d = daily.copy()
+    d["day"] = pd.to_datetime(d["day"])
+    d = d.sort_values("day").reset_index(drop=True)
+
+    exp = d["total_steps"].expanding()
+    d["running_mean"] = exp.mean()
+    d["running_se"] = exp.std() / exp.count() ** 0.5
+    return d

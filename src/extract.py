@@ -34,10 +34,33 @@ if __name__== "__main__":
     
     steps = add_day_for_column(steps)
     print(steps.head())
-    
+
+    #collapsing individual step segments into one total per calendar day
     dailysteps = daily_totals(steps)
+    dailysteps = dailysteps.iloc[:-1] #last day of export is not a full day
     print(dailysteps.head())
 
     print(f"\nTotal days with data: {len(dailysteps)}")
-   
 
+    #build a full calendar(with missing days) and flag which ones have data
+    from transform import completeness_report
+    report = completeness_report(dailysteps)
+
+    #true counts as 1, so sum will give total days with data
+    days_with = report["has_data"].sum()
+    print(f"\nDays with data: {days_with} / {len(report)} ({days_with / len(report):.0%})")
+    print(report[~report["has_data"]].head(10))  # first 10 missing days
+
+    #pull out just the missing days and checks if weekdays show up more than others
+    missing = report[~report["has_data"]].copy()
+    print(missing["day"].dt.day_name().value_counts())
+
+    #compute running mean + standard error as data accumulates
+    from transform import confidence_growth
+    growth = confidence_growth(dailysteps)
+    print(growth.tail())
+
+    #generate + save confidence-growth chart as a png file
+    from plots import plot_confidence_growth
+    plot_confidence_growth(growth)
+    print("Saved to chart to data/processed/confidence_growth.png")
