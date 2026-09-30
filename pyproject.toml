@@ -1,0 +1,12 @@
+[project]
+name = "n1-health"
+version = "0.1.0"
+description = "A reproducible ETL pipeline for single-subject health data analysis"
+dependencies = ["pandas", "matplotlib", "click"]
+
+[project.scripts]
+n1health = "cli:main"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
