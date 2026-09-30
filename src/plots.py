@@ -29,3 +29,26 @@ def plot_confidence_growth(growth,out_path = "data/processed/confidence_growth.p
     fig.tight_layout()
     fig.savefig(out_path, dpi = 150) #making the chart to disk as a png
     plt.close(fig) #free memory
+
+import numpy as np
+
+def plot_completeness_heatmap(report, out_path = "data/processed/completeness_heatmap.png"):
+    os.makedirs(os.path.dirname(out_path), exist_ok = True)
+
+    days = report["day"].values
+    has_data = report["has_data"].astype(int).values 
+
+    #reshape into a grid: one row per week and one column per weekday
+    n_weeks = int(np.ceil(len(has_data)/7)) #np.ceil to round numbers up to nearest integer
+    padded = np.full(n_weeks*7, np.nan) #array to store data
+    padded[:len(has_data)] = has_data
+    grid = padded.reshape(n_weeks,7) #turns a flat list into a grid
+
+    fig, ax = plt.subplots(figsize =(10, n_weeks*0.25))
+    ax.imshow(grid, cmap = "Greens", aspect = "auto", vmin = 0, vmax = 1) #draws a grid with colored cells, and uses 0/1 values to pick intensity
+    ax.set_title("Data completeness (green = day contains data)")
+    ax.set_xlabel("Day of week (Sun-Sat, approx.)")
+    ax.set_ylabel("Week number")
+    fig.tight_layout()
+    fig.savefig(out_path, dpi = 150)
+    plt.close(fig)

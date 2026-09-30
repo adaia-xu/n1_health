@@ -64,3 +64,8 @@ if __name__== "__main__":
     from plots import plot_confidence_growth
     plot_confidence_growth(growth)
     print("Saved to chart to data/processed/confidence_growth.png")
+
+    from plots import plot_completeness_heatmap
+
+    plot_completeness_heatmap(report)
+    print("Saved heatmap to data/processed/completeness_heatmap.png")
