@@ -71,12 +71,13 @@ def completeness_report(daily):
     reportHealth["has_data"] = reportHealth["total_steps"].notna()
     return reportHealth
 
+#copying the daily totals table
 def confidence_growth(daily):
     d = daily.copy()
-    d["day"] = pd.to_datetime(d["day"])
-    d = d.sort_values("day").reset_index(drop=True)
+    d["day"] = pd.to_datetime(d["day"]) #ensures day is a real datetime type
+    d = d.sort_values("day").reset_index(drop=True) #rows are sorted chronologically
 
-    exp = d["total_steps"].expanding()
-    d["running_mean"] = exp.mean()
-    d["running_se"] = exp.std() / exp.count() ** 0.5
-    return d
+    exp = d["total_steps"].expanding() #helps look at all rows from start up (including initial row)
+    d["running_mean"] = exp.mean() #calculating mean of total_steps using every day
+    d["running_se"] = exp.std() / exp.count() ** 0.5 #using Standard deviation formula
+    return d #returning table with two new columns: running_mean and running_se

@@ -1,0 +1,7 @@
+Metadata-Version: 2.4
+Name: n1-health
+Version: 0.1.0
+Summary: A reproducible ETL pipeline for single-subject health data analysis
+Requires-Dist: pandas
+Requires-Dist: matplotlib
+Requires-Dist: click
